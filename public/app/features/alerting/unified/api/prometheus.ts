@@ -2,7 +2,7 @@ import { lastValueFrom } from 'rxjs';
 
 import { getBackendSrv } from '@grafana/runtime';
 import { Matcher } from 'app/plugins/datasource/alertmanager/types';
-import { RuleIdentifier, RuleNamespace } from 'app/types/unified-alerting';
+import {FetchRulesResponse, RuleIdentifier, RuleNamespace} from 'app/types/unified-alerting';
 import { PromRuleGroupDTO, PromRulesResponse } from 'app/types/unified-alerting-dto';
 
 import { getDatasourceAPIUid, GRAFANA_RULES_SOURCE_NAME } from '../utils/datasource';
@@ -109,8 +109,10 @@ export async function fetchRules(
   limitAlerts?: number,
   matcher?: Matcher[],
   state?: string[],
-  identifier?: RuleIdentifier
-): Promise<RuleNamespace[]> {
+  identifier?: RuleIdentifier,
+  nextToken?: string
+): Promise<FetchRulesResponse> {
+  console.log("[prometheus.ts] fetchRules hit");
   if (filter?.dashboardUID && dataSourceName !== GRAFANA_RULES_SOURCE_NAME) {
     throw new Error('Filtering by dashboard UID is only supported for Grafana Managed rules.');
   }
@@ -121,11 +123,19 @@ export async function fetchRules(
     matcher
   );
 
+  const newParams = {
+    ...params,
+    maxRuleGroups: "5",
+    nextToken: nextToken ? nextToken : ""
+  };
+
+  // console.log("[prometheus.ts] params: " + JSON.stringify(newParams));
+
   // adding state param here instead of adding it in prometheusUrlBuilder, for being a possible multiple query param
   const response = await lastValueFrom(
     getBackendSrv().fetch<PromRulesResponse>({
       url,
-      params: params,
+      params: newParams,
       showErrorAlert: false,
       showSuccessAlert: false,
     })
@@ -136,5 +146,11 @@ export async function fetchRules(
     throw e;
   });
 
-  return groupRulesByFileName(response.data.data.groups, dataSourceName);
+  // console.log("[prometheus.ts] fetchRules Response: " + JSON.stringify(response));
+  const responseNextToken = response.data.data.nextToken
+
+  return {
+    ruleNamespaces: groupRulesByFileName(response.data.data.groups, dataSourceName),
+    nextToken: responseNextToken ? responseNextToken : ""
+  };
 }

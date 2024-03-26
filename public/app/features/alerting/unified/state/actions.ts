@@ -130,9 +130,11 @@ export const fetchPromRulesAction = createAsyncThunk(
       thunk: 'unifiedalerting/fetchPromRules',
     });
 
-    return await withSerializedError(
+    const response = await withSerializedError(
       fetchRulesWithLogging(rulesSourceName, filter, limitAlerts, matcher, state, identifier)
     );
+
+    return response.ruleNamespaces;
   }
 );
 

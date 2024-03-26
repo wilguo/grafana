@@ -83,6 +83,11 @@ export interface RuleNamespace {
   groups: RuleGroup[];
 }
 
+export interface FetchRulesResponse {
+  ruleNamespaces: RuleNamespace[];
+  nextToken: string;
+}
+
 export interface RulesSourceResult {
   dataSourceName: string;
   error?: unknown;

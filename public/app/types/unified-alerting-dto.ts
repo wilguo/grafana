@@ -155,6 +155,7 @@ export interface PromResponse<T> {
 
 export type PromRulesResponse = PromResponse<{
   groups: PromRuleGroupDTO[];
+  nextToken?: string;
   totals?: AlertGroupTotals;
 }>;
 

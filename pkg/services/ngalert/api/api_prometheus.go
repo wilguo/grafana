@@ -157,6 +157,12 @@ func (srv PrometheusSrv) RouteGetRuleStatuses(c *contextmodel.ReqContext) respon
 	limitGroups := c.QueryInt64WithDefault("limit", -1)
 	limitRulesPerGroup := c.QueryInt64WithDefault("limit_rules", -1)
 	limitAlertsPerRule := c.QueryInt64WithDefault("limit_alerts", -1)
+
+	maxRuleGroups := c.Query("maxRuleGroups")
+	fmt.Println("=== [api_promtheus.go/RouteGetRuleStatuses] start ===")
+	fmt.Println(maxRuleGroups)
+	fmt.Println("=== [api_promtheus.go/RouteGetRuleStatuses] end ===")
+
 	matchers, err := getMatchersFromRequest(c.Req)
 	if err != nil {
 		return ErrResp(http.StatusBadRequest, err, "")
