@@ -2,7 +2,7 @@ import { lastValueFrom } from 'rxjs';
 
 import { getBackendSrv } from '@grafana/runtime';
 import { Matcher } from 'app/plugins/datasource/alertmanager/types';
-import {FetchRulesResponse, RuleIdentifier, RuleNamespace} from 'app/types/unified-alerting';
+import { FetchRulesResponse, RuleIdentifier, RuleNamespace } from 'app/types/unified-alerting';
 import { PromRuleGroupDTO, PromRulesResponse } from 'app/types/unified-alerting-dto';
 
 import { getDatasourceAPIUid, GRAFANA_RULES_SOURCE_NAME } from '../utils/datasource';
@@ -112,7 +112,7 @@ export async function fetchRules(
   identifier?: RuleIdentifier,
   nextToken?: string
 ): Promise<FetchRulesResponse> {
-  console.log("[prometheus.ts] fetchRules hit");
+  console.log('[prometheus.ts] fetchRules hit with nextToken = ' + nextToken);
   if (filter?.dashboardUID && dataSourceName !== GRAFANA_RULES_SOURCE_NAME) {
     throw new Error('Filtering by dashboard UID is only supported for Grafana Managed rules.');
   }
@@ -125,8 +125,8 @@ export async function fetchRules(
 
   const newParams = {
     ...params,
-    maxRuleGroups: "5",
-    nextToken: nextToken ? nextToken : ""
+    maxRuleGroups: '5',
+    nextToken: nextToken ? nextToken : '',
   };
 
   // console.log("[prometheus.ts] params: " + JSON.stringify(newParams));
@@ -147,10 +147,10 @@ export async function fetchRules(
   });
 
   // console.log("[prometheus.ts] fetchRules Response: " + JSON.stringify(response));
-  const responseNextToken = response.data.data.nextToken
+  const responseNextToken = response.data.data.nextToken;
 
   return {
     ruleNamespaces: groupRulesByFileName(response.data.data.groups, dataSourceName),
-    nextToken: responseNextToken ? responseNextToken : ""
+    nextToken: responseNextToken ? responseNextToken : '',
   };
 }
