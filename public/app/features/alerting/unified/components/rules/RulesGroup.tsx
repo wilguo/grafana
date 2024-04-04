@@ -3,7 +3,7 @@ import pluralize from 'pluralize';
 import React, { useEffect, useState } from 'react';
 
 import { GrafanaTheme2 } from '@grafana/data';
-import { Badge, ConfirmModal, HorizontalGroup, Icon, Spinner, Stack, Tooltip, useStyles2 } from '@grafana/ui';
+import { Badge, ConfirmModal, Icon, Stack, Tooltip, useStyles2 } from '@grafana/ui';
 import { useDispatch } from 'app/types';
 import { CombinedRuleGroup, CombinedRuleNamespace } from 'app/types/unified-alerting';
 
@@ -81,12 +81,13 @@ export const RulesGroup = React.memo(({ group, namespace, expandAll, viewMode }:
 
   // for grafana, link to folder views
   if (isDeleting) {
-    actionIcons.push(
-      <HorizontalGroup key="is-deleting">
-        <Spinner />
-        deleting
-      </HorizontalGroup>
-    );
+    // actionIcons.push(
+    //   <HorizontalGroup key="is-deleting">
+    //     <Spinner />
+    //     deleting
+    //   </HorizontalGroup>
+    // );
+    console.log("[RulesGroup.tsx]");
   } else if (rulesSource === GRAFANA_RULES_SOURCE_NAME) {
     if (folderUID) {
       const baseUrl = makeFolderLink(folderUID);

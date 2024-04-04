@@ -1,11 +1,11 @@
 import { css } from '@emotion/css';
 import pluralize from 'pluralize';
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { GrafanaTheme2, urlUtil } from '@grafana/data';
-import { LinkButton, LoadingPlaceholder, Pagination, Spinner, useStyles2 } from '@grafana/ui';
-import { CombinedRuleNamespace } from 'app/types/unified-alerting';
+import {LinkButton, LoadingPlaceholder, Spinner, useStyles2} from '@grafana/ui';
+import {CombinedRuleNamespace} from 'app/types/unified-alerting';
 
 import { DEFAULT_PER_PAGE_PAGINATION } from '../../../../../core/constants';
 import { AlertingAction, useAlertingAbility } from '../../hooks/useAbilities';
@@ -17,6 +17,7 @@ import { isAsyncRequestStatePending } from '../../utils/redux';
 
 import { RulesGroup } from './RulesGroup';
 import { useCombinedGroupNamespace } from './useCombinedGroupNamespace';
+
 
 interface Props {
   namespaces: CombinedRuleNamespace[];
@@ -45,6 +46,7 @@ export const CloudRules = ({ namespaces, expandAll }: Props) => {
   const hasDataSourcesLoading = dataSourcesLoading.length > 0;
   const hasNamespaces = namespaces.length > 0;
 
+  // @ts-ignore
   const { numberOfPages, onPageChange, page, pageItems } = usePagination(
     groupsWithNamespaces,
     1,
@@ -84,13 +86,13 @@ export const CloudRules = ({ namespaces, expandAll }: Props) => {
       {hasDataSourcesConfigured && !hasDataSourcesLoading && !hasNamespaces && <p>No rules found.</p>}
       {!hasSomeResults && hasDataSourcesLoading && <Spinner size="xl" className={styles.spinner} />}
 
-      <Pagination
-        className={styles.pagination}
-        currentPage={page}
-        numberOfPages={numberOfPages}
-        onNavigate={onPageChange}
-        hideWhenSinglePage
-      />
+      {/*<Pagination*/}
+      {/*  className={styles.pagination}*/}
+      {/*  currentPage={page}*/}
+      {/*  numberOfPages={numberOfPages}*/}
+      {/*  onNavigate={onPageChange}*/}
+      {/*  hideWhenSinglePage*/}
+      {/*/>*/}
     </section>
   );
 };

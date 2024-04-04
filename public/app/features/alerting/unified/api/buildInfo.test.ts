@@ -91,7 +91,10 @@ describe('discoverDataSourceFeatures', () => {
 
     it('When the data source is Loki should test Prom and Ruler API endpoints to discover available features', async () => {
       mocks.fetchTestRulerRulesGroup.mockResolvedValue(null);
-      mocks.fetchRules.mockResolvedValue([]);
+      mocks.fetchRules.mockResolvedValue({
+        ruleNamespaces: [],
+        nextToken: ""
+      });
 
       const response = await discoverDataSourceFeatures({ url: '/datasource/proxy', name: 'Loki', type: 'loki' });
 
@@ -120,7 +123,10 @@ describe('discoverDataSourceFeatures', () => {
           message: 'page not found',
         },
       });
-      mocks.fetchRules.mockResolvedValue([]);
+      mocks.fetchRules.mockResolvedValue({
+        ruleNamespaces: [],
+        nextToken: ""
+      });
 
       const response = await discoverDataSourceFeatures({
         url: '/datasource/proxy',
@@ -146,7 +152,10 @@ describe('discoverDataSourceFeatures', () => {
       );
 
       mocks.fetchTestRulerRulesGroup.mockResolvedValue(null);
-      mocks.fetchRules.mockResolvedValue([]);
+      mocks.fetchRules.mockResolvedValue({
+        ruleNamespaces: [],
+        nextToken: ""
+      });
 
       const response = await discoverDataSourceFeatures({
         url: '/datasource/proxy',

@@ -17,7 +17,7 @@ type promEndpoints struct {
 
 var dsTypeToLotexRoutes = map[string]promEndpoints{
 	"prometheus": {
-		rules:  "/api/v1/rules",
+		rules:  "/api/v1/ruleinfos",
 		alerts: "/api/v1/alerts",
 	},
 	"loki": {

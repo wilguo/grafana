@@ -5,7 +5,7 @@ import { createMonitoringLogger, getBackendSrv } from '@grafana/runtime';
 import { config, reportInteraction } from '@grafana/runtime/src';
 import { contextSrv } from 'app/core/core';
 
-import { RuleNamespace } from '../../../types/unified-alerting';
+import {FetchRulesResponse, RuleNamespace} from '../../../types/unified-alerting';
 import { RulerRulesConfigDTO } from '../../../types/unified-alerting-dto';
 
 import { getSearchFilterFromQuery, RulesFilter } from './search/rulesSearchParser';
@@ -55,7 +55,7 @@ export function withPerformanceLogging<TFunc extends (...args: any[]) => Promise
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function withPromRulesMetadataLogging<TFunc extends (...args: any[]) => Promise<RuleNamespace[]>>(
+export function withPromRulesMetadataLogging<TFunc extends (...args: any[]) => Promise<FetchRulesResponse>>(
   type: string,
   func: TFunc,
   context: Record<string, string>
@@ -64,7 +64,7 @@ export function withPromRulesMetadataLogging<TFunc extends (...args: any[]) => P
     const startLoadingTs = performance.now();
     const response = await func(...args);
 
-    const { namespacesCount, groupsCount, rulesCount } = getPromRulesMetadata(response);
+    const { namespacesCount, groupsCount, rulesCount } = getPromRulesMetadata(response.ruleNamespaces);
 
     logMeasurement(
       type,
